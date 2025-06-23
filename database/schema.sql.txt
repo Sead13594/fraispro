@@ -1,0 +1,11 @@
+CREATE TABLE frais (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(100),
+  prenom VARCHAR(100),
+  date DATE,
+  mois VARCHAR(7),
+  montant NUMERIC(10,2),
+  fichier TEXT,
+  statut VARCHAR(20),
+  token TEXT
+);

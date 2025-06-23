@@ -1,0 +1,19 @@
+import fs from 'fs';
+
+export const validerFrais = async (req, res) => {
+  const { token } = req.params;
+  const dbPath = './uploads/_data.json';
+  try {
+    const data = fs.existsSync(dbPath) ? JSON.parse(fs.readFileSync(dbPath)) : [];
+    const index = data.findIndex(f => f.token === token);
+    if (index === -1) return res.status(404).json({ message: "Frais introuvable." });
+
+    data[index].statut = "validé";
+    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+
+    res.json({ message: "Frais validé." });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};

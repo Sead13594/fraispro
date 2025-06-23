@@ -1,0 +1,8 @@
+import express from 'express';
+import { validerFrais } from '../controllers/validation.controller.js';
+
+const router = express.Router();
+
+router.post('/:token', validerFrais);
+
+export default router;

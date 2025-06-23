@@ -1,0 +1,35 @@
+import fs from 'fs';
+import path from 'path';
+import { sendValidationEmail } from '../utils/mailer.js';
+
+export const enregistrerFrais = async (req, res) => {
+  try {
+    const { nom, prenom, date, montant } = req.body;
+    const fichier = req.file?.filename;
+
+    if (!fichier) {
+      return res.status(400).json({ message: "Aucun justificatif reçu." });
+    }
+
+    // Génération d'un lien unique pour la validation simulée
+    const token = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+
+    // Stockage simulé (à remplacer par insertion BDD)
+    const entry = {
+      nom, prenom, date, montant, fichier,
+      token, statut: "en attente"
+    };
+    const dbPath = './uploads/_data.json';
+    const existing = fs.existsSync(dbPath) ? JSON.parse(fs.readFileSync(dbPath)) : [];
+    existing.push(entry);
+    fs.writeFileSync(dbPath, JSON.stringify(existing, null, 2));
+
+    // Email fictif vers le responsable
+    await sendValidationEmail(nom, prenom, token);
+
+    res.json({ message: "Frais reçu. En attente de validation." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+};

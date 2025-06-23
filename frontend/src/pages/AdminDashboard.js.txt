@@ -1,0 +1,19 @@
+import React, { useState } from 'react';
+
+const AdminDashboard = () => {
+  const [message, setMessage] = useState('');
+
+  const handleParametrage = () => {
+    setMessage("Module de configuration à venir. Cette interface permettra d'ajouter ou modifier les droits, plafonds, etc.");
+  };
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Administration FXP</h2>
+      <button onClick={handleParametrage}>Configurer les utilisateurs</button>
+      <p>{message}</p>
+    </div>
+  );
+};
+
+export default AdminDashboard;

@@ -1,0 +1,23 @@
+import nodemailer from 'nodemailer';
+
+export const sendValidationEmail = async (nom, prenom, token) => {
+  const lienValidation = `${process.env.FRONTEND_URL}/validation/${token}`;
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS
+    }
+  });
+
+  const mailOptions = {
+    from: `"FXP Frais" <${process.env.MAIL_USER}>`,
+    to: process.env.MAIL_RESPONSABLE || 'responsable@example.com',
+    subject: `Validation d'une note de frais - ${prenom} ${nom}`,
+    html: `<p>Bonjour,</p><p>Une nouvelle note de frais a été soumise par ${prenom} ${nom}.</p>
+           <p><a href="${lienValidation}">Cliquez ici pour valider</a></p>`
+  };
+
+  await transporter.sendMail(mailOptions);
+};

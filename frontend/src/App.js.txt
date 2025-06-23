@@ -1,0 +1,19 @@
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import SubmitExpense from './pages/SubmitExpense';
+import AdminDashboard from './pages/AdminDashboard';
+import ValidationPage from './pages/ValidationPage';
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/soumettre" element={<SubmitExpense />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/validation/:token" element={<ValidationPage />} />
+    </Routes>
+  );
+}
+
+export default App;

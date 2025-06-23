@@ -1,0 +1,32 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+const ValidationPage = () => {
+  const { token } = useParams();
+  const [etat, setEtat] = useState('');
+  const [message, setMessage] = useState('');
+
+  const validerFrais = async () => {
+    try {
+      const res = await axios.post(`/api/validation/${token}`);
+      setEtat('validé');
+      setMessage(res.data.message || 'Frais validé avec succès.');
+    } catch (err) {
+      setMessage("Erreur lors de la validation.");
+    }
+  };
+
+  useEffect(() => {
+    validerFrais();
+  }, []);
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Validation de frais</h2>
+      {etat === 'validé' ? <p>{message}</p> : <p>Validation en cours...</p>}
+    </div>
+  );
+};
+
+export default ValidationPage;
